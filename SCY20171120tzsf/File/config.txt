@@ -1,0 +1,12 @@
+[AppConfig]
+MN=88888880000001
+StType=0
+RtdInterval=60
+MinInterval=10
+LoginInterval=600
+PW=123456
+AlarmTarget=1234567
+IP=192.168.1.10
+MASK=255.255.255.0
+GateWay=192.168.1.1
+

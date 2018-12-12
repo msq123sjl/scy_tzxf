@@ -1,0 +1,53 @@
+frmconfig 配置
+frmdata 历史数据查询
+frmdiagnose 在线诊断
+frmevent 系统日志
+frminput 输入法
+frmlogin 登录
+frmmain 主界面
+frmnum 数字按键
+frmsampler 采样器控制
+frmvalve 开关阀门
+myswitchbutton 自定义图标控件
+
+
+
+API：
+gpio IO口
+message 平台通讯协议
+myapi 调用接口及功能函数
+myapp 配置文件
+mysqliteapi 数据库接口
+mythread 线程接口
+spi_drivers SPI接口驱动
+
+
+
+
+输出                                                 输入
+    OT1 集水电磁阀                          IN1             市电检测
+    OT2 集水泵                                  IN2
+    OT3 排水电磁阀                          IN3
+    OT4                                              IN4
+   OT5                                               IN5
+   OT6                                               IN6
+
+
+
+//送检版本采样电阻200欧姆
+6.市电停电
+类别	项目	示例/说明
+使用命令	现场机	上传市电停电通知命令	QN=20100910125506001;ST=32;CN=3081;PW=123456;MN=88888880000001;Flag=4;CP=&&&&
+7、市电恢复供电
+类别	项目	示例/说明
+使用命令	现场机	上传市电恢复供电通知命令	QN=20100910125506001;ST=32;CN=3082;PW=123456;MN=88888880000001;Flag=4;CP=&&&&
+
+
+
+//2017-4-10
+//添加了市电通知指令
+
+//2017-7 -18
+//修改了缓存数据的存储位置
+//修改了数据因子累加量
+//增加了ABB流量计协议

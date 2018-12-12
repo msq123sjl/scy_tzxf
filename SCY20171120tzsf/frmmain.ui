@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>frmMain</class>
+ <widget class="QMainWindow" name="frmMain">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>主界面</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#frm{
+background-image: url(:/image/main2.jpg);
+}
+
+QGroupBox{
+color:rgba(0,255,0,255);
+}
+
+QLabel#label{
+color:rgba(255,255,255,255);
+}
+
+QLabel#label_2{
+color:rgba(255,255,255,255);
+}
+QLabel#label_3{
+color:rgba(255,255,255,255);
+}
+
+QLabel#label_4{
+color:rgba(255,255,255,255);
+}
+
+QLabel#label_5{
+color:rgba(255,255,255,255);
+}
+
+QLabel#label_6{
+color:rgba(255,255,255,255);
+}
+
+QTableView{
+	background-color:rgba(255,255,255,80);
+	border-style:none;
+}</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="frm" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>800</width>
+      <height>461</height>
+     </rect>
+    </property>
+    <widget class="QTableView" name="tableView">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>781</width>
+       <height>321</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="valveStatus">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>40</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>64</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>站点1</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>10</y>
+       <width>64</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>站点4</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="powerStatus">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>40</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>10</y>
+       <width>64</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>站点2</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="netStatus4">
+     <property name="geometry">
+      <rect>
+       <x>250</x>
+       <y>40</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="netStatus3">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>40</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>10</y>
+       <width>64</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>站点3</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>330</x>
+       <y>10</y>
+       <width>62</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>市电</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="netStatus2">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>40</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="netStatus1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>32</width>
+       <height>32</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>400</x>
+       <y>10</y>
+       <width>62</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>阀门</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="btnClearData">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>40</y>
+       <width>111</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>清空数据</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuWenjian">
+    <property name="title">
+     <string>数据采集</string>
+    </property>
+    <addaction name="action_RealTimeData"/>
+    <addaction name="separator"/>
+    <addaction name="action_Analysis"/>
+   </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>数据查询</string>
+    </property>
+    <addaction name="action_HistoryData"/>
+    <addaction name="separator"/>
+    <addaction name="action_Event"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>设备控制</string>
+    </property>
+    <addaction name="action_Sampler"/>
+    <addaction name="separator"/>
+    <addaction name="action_Valve"/>
+    <addaction name="separator"/>
+    <addaction name="action_COD"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>系统管理</string>
+    </property>
+    <addaction name="action_Setting"/>
+    <addaction name="separator"/>
+    <addaction name="action_Export"/>
+    <addaction name="separator"/>
+    <addaction name="action_Import"/>
+    <addaction name="separator"/>
+    <addaction name="action_User"/>
+    <addaction name="separator"/>
+    <addaction name="action_Reset"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>系统调试</string>
+    </property>
+    <addaction name="action_Diagnose"/>
+    <addaction name="separator"/>
+    <addaction name="action_HardwareTest"/>
+   </widget>
+   <addaction name="menuWenjian"/>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_RealTimeData">
+   <property name="text">
+    <string>实时数据</string>
+   </property>
+  </action>
+  <action name="action_Analysis">
+   <property name="text">
+    <string>趋势分析</string>
+   </property>
+  </action>
+  <action name="action_HistoryData">
+   <property name="text">
+    <string>历史数据</string>
+   </property>
+  </action>
+  <action name="action_Event">
+   <property name="text">
+    <string>系统日志</string>
+   </property>
+  </action>
+  <action name="action_Sampler">
+   <property name="text">
+    <string>采样器控制</string>
+   </property>
+  </action>
+  <action name="action_Valve">
+   <property name="text">
+    <string>阀门控制</string>
+   </property>
+  </action>
+  <action name="action_Setting">
+   <property name="text">
+    <string>系统设置</string>
+   </property>
+  </action>
+  <action name="action_Export">
+   <property name="text">
+    <string>数据导出</string>
+   </property>
+  </action>
+  <action name="action_Diagnose">
+   <property name="text">
+    <string>在线诊断</string>
+   </property>
+  </action>
+  <action name="action_HardwareTest">
+   <property name="text">
+    <string>硬件测试</string>
+   </property>
+  </action>
+  <action name="action_User">
+   <property name="text">
+    <string>用户登录</string>
+   </property>
+  </action>
+  <action name="action_Reset">
+   <property name="text">
+    <string>系统重启</string>
+   </property>
+  </action>
+  <action name="action_Import">
+   <property name="text">
+    <string>数据导入</string>
+   </property>
+  </action>
+  <action name="action_COD">
+   <property name="text">
+    <string>COD控制</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
