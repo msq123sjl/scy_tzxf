@@ -2066,6 +2066,10 @@ void myAPI::Protocol_14(int port,int Address,int Dec,QString Name,QString Code,Q
 //承德流量计
 void myAPI::Protocol_15(int port,int Address,int Dec,QString Name,QString Code,QString Unit)
 {
+	static double total_prev = -255;
+	
+	int 	retry_cnt = 0;
+	uchar 	warn_flag = 0;
     double rtd=0;
     double total=0;
     QString flag="D";
@@ -2073,7 +2077,6 @@ void myAPI::Protocol_15(int port,int Address,int Dec,QString Name,QString Code,Q
     QByteArray sendbuf;
     uchar check=0;
     char s[4];
-
     sendbuf.resize(14);
     sendbuf[0]=0x68;
     sendbuf[1]=(char)(Address);
@@ -2094,36 +2097,48 @@ void myAPI::Protocol_15(int port,int Address,int Dec,QString Name,QString Code,Q
     }
     sendbuf[12]=(uchar)check;
     sendbuf[13]=0x16;
-    myCom[port]->write(sendbuf);
-    myCom[port]->flush();
-//    qDebug()<<QString("COM%1 send_rtd:").arg(port+2)<<sendbuf.toHex();
-    sleep(4);
-    readbuf=myCom[port]->readAll();
-    qDebug()<<QString("COM%1 received_rtd:").arg(port+2)<<readbuf.toHex();
-    if(readbuf.length()==18){
-        if(readbuf.endsWith(0x16)&&readbuf.startsWith(0x68)){
-            check=0;
-            for(int j=0;j<16;j++)
-            {
-                check+=readbuf.data()[j];
-            }
-            check=(uchar)check;
-            if(check==readbuf[16]){
-                s[0]=readbuf[12];
-                s[1]=readbuf[13];
-                s[2]=readbuf[14];
-                s[3]=readbuf[15];
-                rtd=*(float *)s;
-                flag="N";
-                if(rtd>3) myApp::FLOW_FLG=1;
-                else {
-                    myApp::FLOW_FLG=0;
-                }
-            }
 
-        }
-    }
+	for(retry_cnt = 0; retry_cnt < DOWN_RETRY_CNT; retry_cnt++){
+	    myCom[port]->write(sendbuf);
+	    myCom[port]->flush();
+	    qDebug()<<QString("COM%1 send_rtd:").arg(port+2)<<sendbuf.toHex();
+	    sleep(4);
+	    readbuf=myCom[port]->readAll();
+	    qDebug()<<QString("COM%1 received_rtd:").arg(port+2)<<readbuf.toHex();
+	    if(readbuf.length()==18){
+	        if(readbuf.endsWith(0x16)&&readbuf.startsWith(0x68)){
+	            check=0;
+	            for(int j=0;j<16;j++)
+	            {
+	                check+=readbuf.data()[j];
+	            }
+	            check=(uchar)check;
+	            if(check==readbuf[16]){
+	                s[0]=readbuf[12];
+	                s[1]=readbuf[13];
+	                s[2]=readbuf[14];
+	                s[3]=readbuf[15];
+	                rtd=*(float *)s;
+					if(rtd < 0 && 0 == warn_flag){ //若第一次出现负数 重新发报文获取数据
+						warn_flag = 1;
+						retry_cnt = 0;
+						continue;
+					}
+					if(rtd < 0 && rtd > -3.0){ //屏蔽仪表没有校准好 出现的小负数
+						rtd = 0;
+					}
+	                flag="N";
+	                if(rtd>3) myApp::FLOW_FLG=1;
+	                else {
+	                    myApp::FLOW_FLG=0;
+	                }
+					break;
+	            }
 
+	        }
+	    }
+	}
+	
     sendbuf[0]=0x68;
     sendbuf[1]=(char)(Address);
     sendbuf[2]=(char)(Address>>8);
@@ -2143,35 +2158,56 @@ void myAPI::Protocol_15(int port,int Address,int Dec,QString Name,QString Code,Q
     }
     sendbuf[12]=(uchar)check;
     sendbuf[13]=0x16;
-    myCom[port]->write(sendbuf);//读取累积流量
-    myCom[port]->flush();
-//    qDebug()<<QString("COM%1 send_total:").arg(port+2)<<sendbuf.toHex();
-    sleep(4);
-     readbuf = myCom[port]->readAll();
-     qDebug()<<QString("COM%1 received_tl:").arg(port+2)<<readbuf.toHex();
-    if(readbuf.length()==22){
-        if(readbuf.endsWith(0x16)&&readbuf.startsWith(0x68))
-        {
-            check=0;
-            for(int j=0;j<20;j++)
-            {
-                check+=readbuf.data()[j];
-            }
-            check=(uchar)check;
-            if(check==readbuf[20]){
-                total=  myHelper::to_natural_binary(readbuf[19])*100000000000LL+
-                            myHelper::to_natural_binary(readbuf[18])*1000000000+
-                            myHelper::to_natural_binary(readbuf[17])*10000000+
-                            myHelper::to_natural_binary(readbuf[16])*100000+
-                            myHelper::to_natural_binary(readbuf[15])*1000+
-                            myHelper::to_natural_binary(readbuf[14])*10+
-                            myHelper::to_natural_binary(readbuf[13])*0.1+
-                            myHelper::to_natural_binary(readbuf[12])*0.001;
-                if(flag=="N"&&total<=50000000)CacheDataProc(rtd,total,flag,Dec,Name,Code,Unit);
-                else flag="D";
-            }
-        }
-    }
+	
+	warn_flag = 0;
+	for(retry_cnt = 0; retry_cnt < DOWN_RETRY_CNT; retry_cnt++){
+	    myCom[port]->write(sendbuf);//读取累积流量
+	    myCom[port]->flush();
+	    qDebug()<<QString("COM%1 send_total:").arg(port+2)<<sendbuf.toHex();
+	    sleep(4);
+	    readbuf = myCom[port]->readAll();
+	    qDebug()<<QString("COM%1 received_tl:").arg(port+2)<<readbuf.toHex();
+	    if(readbuf.length()==22){
+	        if(readbuf.endsWith(0x16)&&readbuf.startsWith(0x68))
+	        {
+	            check=0;
+	            for(int j=0;j<20;j++)
+	            {
+	                check+=readbuf.data()[j];
+	            }
+	            check=(uchar)check;
+	            if(check==readbuf[20]){
+	                total=  myHelper::to_natural_binary(readbuf[19])*100000000000LL+
+	                            myHelper::to_natural_binary(readbuf[18])*1000000000+
+	                            myHelper::to_natural_binary(readbuf[17])*10000000+
+	                            myHelper::to_natural_binary(readbuf[16])*100000+
+	                            myHelper::to_natural_binary(readbuf[15])*1000+
+	                            myHelper::to_natural_binary(readbuf[14])*10+
+	                            myHelper::to_natural_binary(readbuf[13])*0.1+
+	                            myHelper::to_natural_binary(readbuf[12])*0.001;
+	                if(flag=="N"){
+						if(total < 0 || total>50000000){  //累计值量程
+							continue;
+						}
+						if(-255 != total_prev){
+							if(total < total_prev){ //比上一次小 直接过滤掉
+								continue;
+							}
+							if(0 == warn_flag && total - total_prev > 1000){ 
+								//第一次出现增量数据超过一定范围，重新获取数据
+								warn_flag = 1;
+								retry_cnt = 0;
+								continue;
+							}
+						}						
+						total_prev = total;
+	                    CacheDataProc(rtd,total,flag,Dec,Name,Code,Unit);
+	                }
+					break;
+	            }
+	        }
+	    }
+	}
 }
 
 

@@ -6,6 +6,7 @@
 #include "api/message.h"
 #include <QList>
 
+#define DOWN_RETRY_CNT 2
 class myAPI : public QObject
 {
     Q_OBJECT
