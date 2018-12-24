@@ -2138,7 +2138,9 @@ void myAPI::Protocol_15(int port,int Address,int Dec,QString Name,QString Code,Q
 	        }
 	    }
 	}
-	
+	if(flag=="D"){
+		qDebug()<<QString("COM%1 parse received_rtd fail").arg(port+2);
+	}
     sendbuf[0]=0x68;
     sendbuf[1]=(char)(Address);
     sendbuf[2]=(char)(Address>>8);
@@ -2160,7 +2162,7 @@ void myAPI::Protocol_15(int port,int Address,int Dec,QString Name,QString Code,Q
     sendbuf[13]=0x16;
 	
 	warn_flag = 0;
-	for(retry_cnt = 0; retry_cnt < DOWN_RETRY_CNT; retry_cnt++){
+	for(retry_cnt = 0; retry_cnt < DOWN_RETRY_CNT + 2; retry_cnt++){
 	    myCom[port]->write(sendbuf);//读取累积流量
 	    myCom[port]->flush();
 	    qDebug()<<QString("COM%1 send_total:").arg(port+2)<<sendbuf.toHex();
@@ -2168,7 +2170,8 @@ void myAPI::Protocol_15(int port,int Address,int Dec,QString Name,QString Code,Q
 	    readbuf = myCom[port]->readAll();
 	    qDebug()<<QString("COM%1 received_tl:").arg(port+2)<<readbuf.toHex();
 	    if(readbuf.length()==22){
-	        if(readbuf.endsWith(0x16)&&readbuf.startsWith(0x68))
+	        //if(readbuf.endsWith(0x16)&&readbuf.startsWith(0x68))
+	        if(readbuf.startsWith(0x68))
 	        {
 	            check=0;
 	            for(int j=0;j<20;j++)
@@ -2202,9 +2205,12 @@ void myAPI::Protocol_15(int port,int Address,int Dec,QString Name,QString Code,Q
 						}						
 						total_prev = total;
 	                    CacheDataProc(rtd,total,flag,Dec,Name,Code,Unit);
+						qDebug()<<QString("COM%1 parse received_tl success").arg(port+2);
 	                }
 					break;
-	            }
+	            }else{
+					qDebug()<<QString("COM%1 parse received_tl check fail").arg(port+2);
+				}
 	        }
 	    }
 	}
