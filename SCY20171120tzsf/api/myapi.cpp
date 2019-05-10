@@ -4178,6 +4178,104 @@ void myAPI::Protocol_39(int port,int Address,int Dec,QString Name,QString Code,Q
     CacheDataProc(rtd,0,flag,Dec,Name,Code,Unit);
 }
 
+//天泽氨氮
+void myAPI::Protocol_40(int port,int Address,int Dec,QString Name,QString Code,QString Unit)
+{
+    double rtd=0;
+    QString flag="D";
+    QByteArray readbuf;
+    QByteArray sendbuf;
+    int check=0;
+   volatile char s[4];
+//状态读取
+    sendbuf.resize(8);
+    sendbuf[0]=Address;
+    sendbuf[1]=0x03;
+    sendbuf[2]=0x03;
+    sendbuf[3]=0xBC;
+    sendbuf[4]=0x00;
+    sendbuf[5]=0x01;
+    check = myHelper::CRC16_Modbus(sendbuf.data(),6);
+    sendbuf[6]=(char)(check);
+    sendbuf[7]=(char)(check>>8);
+    myCom[port]->readAll();
+    qDebug()<<QString("COM%1 send:").arg(port+2)<<sendbuf.toHex().toUpper();
+    myCom[port]->write(sendbuf);
+    myCom[port]->flush();
+    sleep(2);
+//    usleep(COM[port].Timeout*1000);
+    readbuf=myCom[port]->readAll();
+    qDebug()<<QString("COM%1 received:").arg(port+2)<<readbuf.toHex().toUpper();
+    if(readbuf.length()>=7){
+        if(Address==readbuf[0])
+        {
+                check = myHelper::CRC16_Modbus(readbuf.data(),readbuf.length()-2);
+                if((readbuf[readbuf.length()-2]==(char)(check&0xff))&&(readbuf[readbuf.length()-1]==(char)(check>>8)))
+                {
+                    if(0==readbuf[4]&&0==readbuf[3]) myApp::NH3_Isok=true;
+                }
+        }
+    }
+//瞬时数据读取
+    sendbuf[0]=Address;
+    sendbuf[1]=0x03;
+    sendbuf[2]=0x00;
+    sendbuf[3]=0xEE;
+    sendbuf[4]=0x00;
+    sendbuf[5]=0x02;
+    check = myHelper::CRC16_Modbus(sendbuf.data(),6);
+    sendbuf[6]=(char)(check);
+    sendbuf[7]=(char)(check>>8);
+    myCom[port]->readAll();
+    qDebug()<<QString("COM%1 send:").arg(port+2)<<sendbuf.toHex().toUpper();
+    myCom[port]->write(sendbuf);
+    myCom[port]->flush();
+    sleep(1);
+//    usleep(COM[port].Timeout*1000);
+    readbuf=myCom[port]->readAll();
+    qDebug()<<QString("COM%1 received:").arg(port+2)<<readbuf.toHex().toUpper();
+    if(readbuf.length()>=9){
+        if(Address==readbuf[0])
+        {
+                check = myHelper::CRC16_Modbus(readbuf.data(),readbuf.length()-2);
+                if((readbuf[readbuf.length()-2]==(char)(check&0xff))&&(readbuf[readbuf.length()-1]==(char)(check>>8)))
+                {
+                    s[0]=readbuf[6];
+                    s[1]=readbuf[5];
+                    s[2]=readbuf[4];
+                    s[3]=readbuf[3];
+                    rtd=*(float *)s;
+                    flag='N';
+                }
+        }
+    }
+    CacheDataProc(rtd,0,flag,Dec,Name,Code,Unit);
+//添加COD状态检测 空闲状态         myApp::COD_Isok=true;
+
+    if(myApp::NH3_FLG&&myApp::NH3_Isok==true){
+        myApp::NH3_FLG=0;
+        myApp::NH3_Isok=false;
+        //添加COD取样指令
+        sendbuf.resize(11);
+        sendbuf[0]=Address;
+        sendbuf[1]=0x10;
+        sendbuf[2]=0x06;
+        sendbuf[3]=0x72;
+        sendbuf[4]=0x00;
+        sendbuf[5]=0x01;
+        sendbuf[6]=0x02;
+        sendbuf[7]=0x00;
+        sendbuf[8]=0x01;
+        check = myHelper::CRC16_Modbus(sendbuf.data(),9);
+        sendbuf[9]=(char)(check);
+        sendbuf[10]=(char)(check>>8);
+        myCom[port]->readAll();
+        qDebug()<<QString("COM%1 send:").arg(port+2)<<sendbuf.toHex().toUpper();
+        myCom[port]->write(sendbuf);
+        myCom[port]->flush();
+    }
+
+}
 
 
 double myAPI::HexToDouble(const unsigned char* bytes)
@@ -4359,6 +4457,8 @@ void myAPI::MessageFromCom(int port)
             break;
         case 38://太仓-NI-GE
             Protocol_39(port,Address,Decimals,Name,Code,Unit);
+        case 39:////天泽氨氮
+            Protocol_40(port,Address,Decimals,Name,Code,Unit);
             break;
         default: break;
 

@@ -34,6 +34,7 @@ volatile int  myApp::Out_drain_close=7;   //集水泵
 volatile int  myApp::Out_catchment_open=8;//排水电磁阀
 volatile int     myApp::In_power=10;  //市电检测
 volatile bool myApp::COD_FLG=0;
+volatile bool myApp::NH3_FLG=0;
 volatile bool myApp::Ni_FLG=0;
 volatile bool myApp::Cu_FLG=0;
 volatile bool myApp::Ge_FLG=0;
@@ -47,6 +48,7 @@ QString myApp::DoorStatus="OFF";
 
 //volatile bool myApp::NH_FLG=0;
 volatile bool myApp::COD_Isok=true; //空闲状态
+volatile bool myApp::NH3_Isok=true; //空闲状态
 volatile bool myApp::Ni_Isok=true; //空闲状态
 volatile bool myApp::Cu_Isok=true; //空闲状态
 volatile bool myApp::Ge_Isok=true; //空闲状态

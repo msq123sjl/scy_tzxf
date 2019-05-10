@@ -1192,12 +1192,13 @@ int Message::messageProc(QString str,QextSerialPort *com,QTcpSocket *tcp)
         if(Ex.indexIn(str)!=1){
             switch (Ex.cap(1).toInt()) {
             case 1018:
-                if(myApp::COD_Isok==false||myApp::Cu_Isok==false||myApp::Ni_Isok==false||myApp::Ge_Isok==false){
+                if(myApp::COD_Isok==false||myApp::NH3_Isok==false||myApp::Cu_Isok==false||myApp::Ni_Isok==false||myApp::Ge_Isok==false){
                     ExecuteRespond(RESULT_USING,com,tcp); //
                     return -1;
                     break;
                 }
                 myApp::COD_FLG=1;
+                myApp::NH3_FLG=1;
                 myApp::Ni_FLG=1;
                 myApp::Cu_FLG=1;
                 myApp::Ge_FLG=1;

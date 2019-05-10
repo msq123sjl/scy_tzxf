@@ -90,7 +90,7 @@ private:
     void Protocol_37(int port,int Address,int Dec,QString Name,QString Code,QString Unit);
     void Protocol_38(int port,int Address,int Dec,QString Name,QString Code,QString Unit);
     void Protocol_39(int port,int Address,int Dec,QString Name,QString Code,QString Unit);
-
+    void Protocol_40(int port,int Address,int Dec,QString Name,QString Code,QString Unit);
     double HexToDouble(const unsigned char* buf);
     void delaymsec(int msec);
 

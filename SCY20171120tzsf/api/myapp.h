@@ -109,6 +109,7 @@ public:
     static QString DoorStatus;//=OFF门禁状态关 =ON 门禁状态开
 
     static volatile bool COD_FLG;//=1需要COD做样
+    static volatile bool NH3_FLG;//=1需要NH3做样
     static volatile bool Cu_FLG;//=1需要总铜做样
     static volatile bool Ni_FLG;//=1需要镍做样
     static volatile bool Ge_FLG;//=1需要铬做样
@@ -123,6 +124,7 @@ public:
 
 //    static volatile bool NH_FLG;
     static volatile bool COD_Isok; //=0正在做样
+    static volatile bool NH3_Isok; //=0正在做样
     static volatile bool Cu_Isok; //=0正在做样
     static volatile bool Ni_Isok; //=0正在做样
     static volatile bool Ge_Isok; //=0正在做样

@@ -34,6 +34,7 @@ void frmcod::on_btn_Cancel_clicked()
 void frmcod::on_btn_StartWork_clicked()
 {
     myApp::COD_FLG=1;
+    myApp::NH3_FLG=1;
     myApp::Ni_FLG=1;
     myApp::Cu_FLG=1;
     myApp::Ge_FLG=1;
